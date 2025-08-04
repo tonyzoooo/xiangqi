@@ -32,6 +32,7 @@ const config = [
       ...reactNative.configs.all.rules,
       quotes: ['error', 'single'],
       semi: ['error', 'never'],
+      'react/react-in-jsx-scope': 'off',
     },
   },
 ]
