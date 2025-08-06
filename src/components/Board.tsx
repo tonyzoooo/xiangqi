@@ -1,9 +1,6 @@
 import { View, StyleSheet } from 'react-native'
-import { colors } from '../theme/colors'
-
-const ROWS = 9
-const COLS = 8
-const CELL_SIZE = 36
+import { colors } from '@/theme'
+import { CELL_SIZE, COLS, ROWS } from '@/constants'
 
 export const Board = () => {
   return (

@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar'
 import { View, StyleSheet } from 'react-native'
-import { Board } from './components'
+import { Game } from '@/components'
 import { colors } from './theme'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Board />
+      <Game />
       <StatusBar style="auto" />
     </View>
   )
