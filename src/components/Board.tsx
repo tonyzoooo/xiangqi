@@ -1,35 +1,33 @@
 import { View, StyleSheet } from 'react-native'
+import { Grid, PalaceOverlay } from '@/components'
+import { BORDER_WIDTH, CELL_SIZE, COLS, ROWS } from '@/constants'
 import { colors } from '@/theme'
-import { CELL_SIZE, COLS, ROWS } from '@/constants'
 
 export const Board = () => {
   return (
-    <View style={styles.board}>
-      {Array.from({ length: ROWS }).map((_, row) => (
-        <View key={row} style={styles.row}>
-          {Array.from({ length: COLS }).map((_, col) => (
-            <View key={col} style={styles.cell} />
-          ))}
-        </View>
-      ))}
+    <View style={styles.outerWrapper}>
+      <View style={styles.board}>
+        <Grid />
+        <PalaceOverlay />
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   board: {
+    alignItems: 'center',
     backgroundColor: colors.boardFill,
     borderColor: colors.boardBorder,
-    borderWidth: 2,
-    padding: 2,
+    borderWidth: BORDER_WIDTH,
+    height: CELL_SIZE * ROWS,
+    justifyContent: 'center',
+    width: CELL_SIZE * COLS,
   },
-  cell: {
-    borderColor: colors.boardBorder,
-    borderWidth: 0.5,
-    height: CELL_SIZE,
-    width: CELL_SIZE,
-  },
-  row: {
-    flexDirection: 'row',
+  outerWrapper: {
+    alignItems: 'center',
+    backgroundColor: colors.boardFill,
+    justifyContent: 'center',
+    padding: CELL_SIZE / 2,
   },
 })
