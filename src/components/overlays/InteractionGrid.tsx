@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native'
+
 import { CELL_SIZE, COLS, ROWS } from '@/constants'
 
 const DEBUG = true
