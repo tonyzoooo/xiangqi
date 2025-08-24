@@ -1,7 +1,8 @@
+import { StyleSheet, ViewStyle } from 'react-native'
 import Svg, { Line } from 'react-native-svg'
+
 import { BORDER_WIDTH, CELL_SIZE } from '@/constants'
 import { colors } from '@/theme'
-import { StyleSheet, ViewStyle } from 'react-native'
 
 export const PalaceOverlay = () => {
   return (

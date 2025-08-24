@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
 import { View, StyleSheet } from 'react-native'
+
 import { Game } from '@/components'
+
 import { colors } from './theme'
 
 export default function App() {

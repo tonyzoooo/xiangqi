@@ -1,3 +1,5 @@
+import { type Piece } from './rules'
+
 export type Side = 'red' | 'black'
 
 export type PieceType =
@@ -9,9 +11,6 @@ export type PieceType =
   | 'general'
   | 'soldier'
 
-export type Piece = {
-  type: PieceType
-  side: Side
-}
-
 export type BoardState = (Piece | null)[][]
+
+export { type Piece }

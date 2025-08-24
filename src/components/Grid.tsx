@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text } from 'react-native'
-import { colors } from '@/theme'
+
 import { CELL_SIZE, COLS, GRID_WIDTH, ROWS } from '@/constants'
+import { colors } from '@/theme'
 
 export const Grid = () => {
   return (
@@ -9,13 +10,13 @@ export const Grid = () => {
         if (y === 4) {
           return (
             <View key="river" style={styles.river}>
-              <Text style={styles.riverText}>
+              <Text selectable={false} style={styles.riverText}>
                 {'楚' +
-                  '\u00A0'.repeat(2) +
+                  '\u00A0'.repeat(5) +
                   '河' +
-                  '\u00A0'.repeat(10) +
+                  '\u00A0'.repeat(30) +
                   '漢' +
-                  '\u00A0'.repeat(2) +
+                  '\u00A0'.repeat(5) +
                   '界'}
               </Text>
             </View>
@@ -54,10 +55,8 @@ const styles = StyleSheet.create({
   },
   riverText: {
     color: colors.boardBorder,
-    fontFamily: 'serif',
     fontSize: CELL_SIZE * 0.4,
     fontWeight: '600',
-    letterSpacing: CELL_SIZE * 0.15,
     textAlign: 'center',
     width: '100%',
   },

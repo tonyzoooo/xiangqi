@@ -1,10 +1,11 @@
 import { FC } from 'react'
-import { Piece as PieceInfo, Side } from '@/logic'
-import { colors, DisplayType } from '@/theme'
-import { ICONS, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
+import { Pressable } from 'react-native'
 import Svg, { Circle, Text } from 'react-native-svg'
 import { SvgProps } from 'react-native-svg'
-import { Pressable } from 'react-native'
+
+import { ICONS, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
+import { Piece as PieceInfo, Side } from '@/logic'
+import { colors, DisplayType } from '@/theme'
 
 type PieceProps = {
   piece: PieceInfo

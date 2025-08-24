@@ -3,6 +3,7 @@ import ts from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import react from 'eslint-plugin-react'
 import reactNative from 'eslint-plugin-react-native'
+import importPlugin from 'eslint-plugin-import'
 import globals from 'globals'
 
 const config = [
@@ -24,6 +25,7 @@ const config = [
       '@typescript-eslint': ts,
       react,
       'react-native': reactNative,
+      import: importPlugin,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -33,6 +35,27 @@ const config = [
       quotes: ['error', 'single'],
       semi: ['error', 'never'],
       'react/react-in-jsx-scope': 'off',
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'],
+          ],
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          'newlines-between': 'always',
+        },
+      ],
+    },
+    settings: {
+      'import/resolver': {
+        alias: {
+          map: [['@', './src']],
+          extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        },
+      },
     },
   },
 ]
