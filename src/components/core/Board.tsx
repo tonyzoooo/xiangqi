@@ -1,8 +1,10 @@
 import { View, StyleSheet } from 'react-native'
 
-import { Grid, PalaceOverlay } from '@/components'
 import { BORDER_WIDTH, CELL_SIZE, COLS, ROWS } from '@/constants'
 import { colors } from '@/theme'
+
+import { Grid } from './Grid'
+import { PalaceOverlay } from '../overlays'
 
 export const Board = () => {
   return (

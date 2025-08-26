@@ -73,9 +73,9 @@ describe('Elephant#getValidMoves', () => {
 
     board[4][9] = redGeneral
     board[4][0] = blackGeneral
-    board[4][4] = elephant
+    board[4][2] = elephant
 
-    const moves = elephant.getValidMoves(board, 4, 4)
+    const moves = elephant.getValidMoves(board, 4, 2)
     expect(moves).toEqual([])
   })
 })

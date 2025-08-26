@@ -14,3 +14,11 @@ export type PieceType =
 export type BoardState = (Piece | null)[][]
 
 export { Piece }
+
+export type Move = {
+  from: [number, number]
+  to: [number, number]
+  piece: PieceType
+  captured?: PieceType
+  capturedSide?: Side
+}

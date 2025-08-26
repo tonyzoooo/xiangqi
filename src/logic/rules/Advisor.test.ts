@@ -55,7 +55,7 @@ describe('Advisor#getValidMoves', () => {
     board[0][4] = blackGeneral
     board[8][4] = advisor
 
-    const moves = advisor.getValidMoves(board, 4, 8)
+    const moves = advisor.getValidMoves(board, 8, 4)
     expect(moves).toEqual([])
   })
 })

@@ -69,33 +69,43 @@ export abstract class Piece {
     from: [number, number],
     to: [number, number]
   ): boolean {
-    const newBoard: BoardState = board.map((row) => row.slice())
-    const movingPiece = board[from[1]][from[0]]
-    newBoard[from[1]][from[0]] = null
-    newBoard[to[1]][to[0]] = movingPiece
+    const [fromX, fromY] = from
+    const [toX, toY] = to
 
     for (let x = 0; x < 9; x++) {
       let redY: number | null = null
       let blackY: number | null = null
 
       for (let y = 0; y < 10; y++) {
-        const p = newBoard[y][x]
-        if (!p) continue
-        if (p.type === 'general') {
-          if (p.side === 'red') redY = y
-          else blackY = y
+        if (x === fromX && y === fromY) continue
+
+        let piece = board[y][x]
+
+        if (x === toX && y === toY) {
+          piece = board[fromY][fromX]
         }
+
+        if (!piece || piece.type !== 'general') continue
+
+        if (piece.side === 'red') redY = y
+        else blackY = y
       }
 
       if (redY !== null && blackY !== null) {
         const [minY, maxY] = [Math.min(redY, blackY), Math.max(redY, blackY)]
         let blocked = false
+
         for (let y = minY + 1; y < maxY; y++) {
-          if (newBoard[y][x]) {
+          if (x === fromX && y === fromY) continue
+
+          const cell =
+            x === toX && y === toY ? board[fromY][fromX] : board[y][x]
+          if (cell) {
             blocked = true
             break
           }
         }
+
         if (!blocked) return true
       }
     }

@@ -52,7 +52,13 @@ export const Piece = ({
 
   return (
     <Pressable onPress={onPress}>
-      <Svg width={PIECE_SIZE} height={PIECE_SIZE}>
+      <Svg
+        width={PIECE_SIZE}
+        height={PIECE_SIZE}
+        style={
+          side === 'black' ? { transform: [{ rotate: '180deg' }] } : undefined
+        }
+      >
         <Circle
           cx="50%"
           cy="50%"

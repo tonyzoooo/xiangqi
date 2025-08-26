@@ -7,36 +7,38 @@ export class Cannon extends Piece {
   }
 
   getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
-    const directions: [number, number][] = [
-      [0, 1],
-      [0, -1],
+    const moves: [number, number][] = []
+    const dirs: [number, number][] = [
       [1, 0],
       [-1, 0],
+      [0, 1],
+      [0, -1],
     ]
 
-    const candidates: [number, number][] = []
-
-    for (const [dx, dy] of directions) {
-      let hasJumped = false
+    for (const [dx, dy] of dirs) {
+      let jumped = false
 
       for (let i = 1; i < 10; i++) {
         const nx = x + dx * i
         const ny = y + dy * i
-
         if (!this.isInsideBoard(nx, ny)) break
 
         const target = board[ny][nx]
 
-        if (!hasJumped) {
+        if (!jumped) {
           if (!target) {
-            candidates.push([nx, ny])
+            if (!this.isFlyingGeneralViolated(board, [x, y], [nx, ny])) {
+              moves.push([nx, ny])
+            }
           } else {
-            hasJumped = true
+            jumped = true
           }
         } else {
           if (target) {
             if (!this.sameSide(target)) {
-              candidates.push([nx, ny])
+              if (!this.isFlyingGeneralViolated(board, [x, y], [nx, ny])) {
+                moves.push([nx, ny])
+              }
             }
             break
           }
@@ -44,19 +46,13 @@ export class Cannon extends Piece {
       }
     }
 
-    if (this.blocksDueToGeneralCapture(board, candidates)) {
+    if (this.blocksDueToGeneralCapture(board, moves)) {
       return []
     }
 
-    const filtered = candidates.filter(([nx, ny]) => {
+    return moves.filter(([nx, ny]) => {
       const target = board[ny][nx]
-      return (
-        !this.isIllegalCapture(target) &&
-        !this.isFlyingGeneralViolated(board, [x, y], [nx, ny])
-      )
+      return !this.isIllegalCapture(target)
     })
-
-    console.log('final moves', filtered)
-    return filtered
   }
 }

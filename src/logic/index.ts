@@ -1,2 +1,5 @@
 export * from './board'
+export * from './format'
+export * from './history'
+export * from './rules'
 export * from './types'

@@ -1,5 +1,1 @@
-export * from './Board'
 export * from './Game'
-export * from './Grid'
-export * from './overlays'
-export * from './Piece'

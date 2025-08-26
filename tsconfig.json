@@ -21,9 +21,9 @@
   },
   "exclude": [
     "node_modules",
-    "babel.config.js",
+    "babel.config.cjs",
     "metro.config.cjs",
-    "jest.config.js"
+    "jest.config.cjs"
   ],
   "extends": "expo/tsconfig.base"
 }
