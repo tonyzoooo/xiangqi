@@ -1,5 +1,5 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import type { Side } from '@/logic/types'
 import { colors } from '@/theme'
@@ -35,13 +35,17 @@ export const UserInterface = ({
 
       <View style={styles.bottomBar}>
         <Pressable style={styles.iconButton} onPress={onUndo}>
-          <Icon name="undo-variant" size={26} color="#2c3e50" />
+          <MaterialCommunityIcons
+            name="undo-variant"
+            size={26}
+            color="#2c3e50"
+          />
         </Pressable>
 
         <Text style={styles.timer}>{timer}</Text>
 
         <Pressable style={styles.iconButton} onPress={onRestart}>
-          <Icon name="restart" size={26} color="#2c3e50" />
+          <MaterialCommunityIcons name="restart" size={26} color="#2c3e50" />
         </Pressable>
       </View>
     </View>
