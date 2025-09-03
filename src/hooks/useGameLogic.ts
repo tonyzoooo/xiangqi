@@ -1,4 +1,6 @@
-import { Piece } from '@/logic'
+import { useState } from 'react'
+
+import { BoardState, Piece, Side } from '@/logic'
 
 import { useSelection } from './useBoardSelection'
 import { useBoardState } from './useBoardState'
@@ -14,6 +16,8 @@ export const useGameLogic = () => {
     useSelection(state)
 
   const { timer, startTimer, resetTimer, timerStarted } = useTimer()
+
+  const [winner, setWinner] = useState<Side | null>(null)
 
   const handlePress = (x: number, y: number) => {
     if (!selected && !state[y][x]) return
@@ -32,7 +36,14 @@ export const useGameLogic = () => {
 
     applyMove(sx, sy, x, y)
     clearSelection()
-    setTurn(turn === 'red' ? 'black' : 'red')
+
+    const opponent: Side = turn === 'red' ? 'black' : 'red'
+
+    if (isGeneralBlocked(state, opponent)) {
+      setWinner(turn)
+    } else {
+      setTurn(opponent)
+    }
   }
 
   const restartGame = () => {
@@ -40,16 +51,33 @@ export const useGameLogic = () => {
     restartBoard()
     clearSelection()
     setTurn('red')
+    setWinner(null)
   }
 
   const undoLastMove = () => {
     undoMove()
     setTurn(turn === 'red' ? 'black' : 'red')
+    setWinner(null)
   }
 
   const handlePiecePress = (x: number, y: number, piece: Piece) => {
     if (piece.side !== turn && !selected) return
     handlePress(x, y)
+  }
+
+  const canUndoLastMove = history.length !== 0
+
+  const isGeneralBlocked = (board: BoardState, side: Side): boolean => {
+    for (let y = 0; y < board.length; y++) {
+      for (let x = 0; x < board[y].length; x++) {
+        const piece = board[y][x]
+        if (piece?.type === 'general' && piece.side === side) {
+          const moves = piece.getValidMoves(board, x, y)
+          return moves.length === 0
+        }
+      }
+    }
+    return true
   }
 
   return {
@@ -59,9 +87,11 @@ export const useGameLogic = () => {
     captures,
     turn,
     timer,
+    winner,
     restartGame,
     undoLastMove,
     handlePress,
     handlePiecePress,
+    canUndoLastMove,
   }
 }

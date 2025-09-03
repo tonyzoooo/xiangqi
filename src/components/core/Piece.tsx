@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Pressable } from 'react-native'
-import Svg, { Circle, Text } from 'react-native-svg'
+import Svg, { Circle, Text, G } from 'react-native-svg'
 import { SvgProps } from 'react-native-svg'
 
 import { ICONS, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
@@ -23,32 +23,11 @@ export const Piece = ({
   selected,
 }: PieceProps) => {
   const color = side === 'red' ? colors.red : colors.black
+  const iconSize = PIECE_SIZE * 0.6
+  const offset = (PIECE_SIZE - iconSize) / 2
 
   const IconCommon: FC<SvgProps> = ICONS.common[piece.type]
   const IconSide: FC<SvgProps> = ICONS[side][piece.type]
-
-  const renderIcon = (Icon: FC<SvgProps>) => (
-    <Icon
-      width={PIECE_SIZE * 0.6}
-      height={PIECE_SIZE * 0.6}
-      x={(PIECE_SIZE - PIECE_SIZE * 0.6) / 2}
-      y={(PIECE_SIZE - PIECE_SIZE * 0.6) / 2}
-      color={color}
-    />
-  )
-
-  const renderText = () => (
-    <Text
-      x="50%"
-      y="55%"
-      fontSize={PIECE_SIZE * 0.3}
-      fill={color}
-      fontWeight="bold"
-      textAnchor="middle"
-    >
-      {getChar(piece.type, side)}
-    </Text>
-  )
 
   return (
     <Pressable onPress={onPress}>
@@ -60,19 +39,35 @@ export const Piece = ({
         }
       >
         <Circle
-          cx="50%"
-          cy="50%"
+          cx={PIECE_SIZE / 2}
+          cy={PIECE_SIZE / 2}
           r={PIECE_SIZE / 2 - STROKE_WIDTH}
           stroke={color}
           strokeWidth={STROKE_WIDTH}
           fill={selected ? '#ff0' : '#fff'}
-          fillOpacity={1}
         />
-        {displayType === 'text'
-          ? renderText()
-          : displayType === 'icon'
-            ? renderIcon(IconCommon)
-            : renderIcon(IconSide)}
+
+        {displayType === 'text' ? (
+          <Text
+            x={PIECE_SIZE / 2}
+            y={PIECE_SIZE / 2}
+            fontSize={PIECE_SIZE * 0.3}
+            fill={color}
+            fontWeight="bold"
+            textAnchor="middle"
+            alignmentBaseline="middle"
+          >
+            {getChar(piece.type, side)}
+          </Text>
+        ) : (
+          <G transform={`translate(${offset}, ${offset})`}>
+            {displayType === 'icon' ? (
+              <IconCommon width={iconSize} height={iconSize} color={color} />
+            ) : (
+              <IconSide width={iconSize} height={iconSize} color={color} />
+            )}
+          </G>
+        )}
       </Svg>
     </Pressable>
   )

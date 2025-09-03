@@ -122,4 +122,35 @@ export abstract class Piece {
       return target?.type === 'general' && !this.sameSide(target)
     })
   }
+
+  protected isGeneralThreatened(board: BoardState, side: Side): boolean {
+    let gx = -1,
+      gy = -1
+
+    for (let y = 0; y < board.length; y++) {
+      for (let x = 0; x < board[y].length; x++) {
+        const piece = board[y][x]
+        if (piece?.type === 'general' && piece.side === side) {
+          gx = x
+          gy = y
+          break
+        }
+      }
+      if (gx !== -1) break
+    }
+
+    for (let y = 0; y < board.length; y++) {
+      for (let x = 0; x < board[y].length; x++) {
+        const piece = board[y][x]
+        if (!piece || piece.side === side) continue
+
+        const moves = piece.getValidMoves(board, x, y)
+        if (moves.some(([mx, my]) => mx === gx && my === gy)) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
 }

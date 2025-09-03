@@ -2,18 +2,11 @@ import React from 'react'
 
 import { Piece } from '@/logic'
 
-import {
-  ValidMovesOverlay,
-  Captures,
-  InteractionGrid,
-  TurnAnnouncement,
-} from './overlays'
+import { ValidMovesOverlay, Captures, InteractionGrid } from './overlays'
 
 export const GameOverlay = ({
   validMoves,
   captures,
-  turn,
-  showAnnouncement,
   onPress,
 }: {
   validMoves: [number, number][]
@@ -29,13 +22,6 @@ export const GameOverlay = ({
       <ValidMovesOverlay moves={validMoves} />
       <InteractionGrid onPress={onPress} />
       <Captures captures={captures} />
-      {showAnnouncement && (
-        <TurnAnnouncement
-          turn={turn}
-          visible={showAnnouncement}
-          onFinish={() => {}}
-        />
-      )}
     </>
   )
 }

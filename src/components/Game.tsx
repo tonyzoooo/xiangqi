@@ -1,17 +1,16 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import { useGameLogic, useOrientation } from '@/hooks'
+import { useGame } from '@/context'
+import { useOrientation } from '@/hooks'
 import { formatTime } from '@/logic'
 
 import { Board } from './core'
 import { GameOverlay } from './GameOverlay'
 import { GamePieces } from './GamePieces'
-import { UserInterface } from './overlays'
+import { UserInterface, VictoryBanner } from './overlays'
 
 export const Game = () => {
   const orientation = useOrientation()
-
   const {
     state,
     selected,
@@ -23,7 +22,8 @@ export const Game = () => {
     undoLastMove,
     handlePress,
     handlePiecePress,
-  } = useGameLogic()
+    canUndoLastMove,
+  } = useGame()
 
   return (
     <View style={styles.container}>
@@ -44,12 +44,15 @@ export const Game = () => {
           selected={selected}
           onPress={handlePiecePress}
         />
+        <VictoryBanner />
       </View>
+
       <UserInterface
         turn={turn}
         onRestart={restartGame}
         onUndo={undoLastMove}
         timer={formatTime(timer)}
+        canUndo={canUndoLastMove}
       />
     </View>
   )

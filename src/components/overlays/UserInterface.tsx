@@ -9,6 +9,7 @@ type UserInterfaceProps = {
   timer: string
   onRestart: () => void
   onUndo: () => void
+  canUndo: boolean
 }
 
 const sideLabel = {
@@ -21,6 +22,7 @@ export const UserInterface = ({
   timer,
   onRestart,
   onUndo,
+  canUndo,
 }: UserInterfaceProps) => {
   return (
     <View style={styles.container}>
@@ -34,7 +36,10 @@ export const UserInterface = ({
       </View>
 
       <View style={styles.bottomBar}>
-        <Pressable style={styles.iconButton} onPress={onUndo}>
+        <Pressable
+          style={[styles.iconButton, !canUndo && styles.iconButtonDisabled]}
+          onPress={canUndo ? onUndo : undefined}
+        >
           <MaterialCommunityIcons
             name="undo-variant"
             size={26}
@@ -74,6 +79,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     padding: 12,
     pointerEvents: 'auto',
+  },
+  iconButtonDisabled: {
+    opacity: 0.3,
+    pointerEvents: 'none',
   },
   red: {
     color: colors.red,
