@@ -1,14 +1,16 @@
 import { useState } from 'react'
 
-import { BoardState, createInitialBoard, MoveHistory, PieceFactory } from '@/logic'
+import { BoardState, createInitialBoard, Move, MoveHistory, PieceFactory } from '@/logic'
 
 export const useBoardState = (history: MoveHistory) => {
   const [state, setState] = useState(createInitialBoard())
   const [turn, setTurn] = useState<'red' | 'black'>('red')
+  const [moves, setMoves] = useState<Move[]>([])
 
   const restartBoard = () => {
     history.clear()
     setState(createInitialBoard())
+    setMoves([])
   }
 
   const applyMove = (sx: number, sy: number, x: number, y: number): BoardState => {
@@ -17,14 +19,16 @@ export const useBoardState = (history: MoveHistory) => {
     newBoard[y][x] = piece
     newBoard[sy][sx] = null
 
-    history.push({
+    const move: Move = {
       from: [sx, sy],
       to: [x, y],
       piece: piece.type,
       captured: state[y][x]?.type,
       capturedSide: state[y][x]?.side,
-    })
+    }
 
+    history.push(move)
+    setMoves((prev) => [...prev, move])
     setState(newBoard)
     return newBoard
   }
@@ -39,6 +43,7 @@ export const useBoardState = (history: MoveHistory) => {
       ? PieceFactory.create(last.captured, last.capturedSide)
       : null
     setState(newBoard)
+    setMoves((prev) => prev.slice(0, -1))
   }
 
   return {
@@ -46,6 +51,7 @@ export const useBoardState = (history: MoveHistory) => {
     setState,
     turn,
     setTurn,
+    moves,
     restartBoard,
     applyMove,
     undoMove,

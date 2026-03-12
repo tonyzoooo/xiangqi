@@ -54,14 +54,14 @@ export const UserInterface = ({
           <MaterialCommunityIcons
             name="undo-variant"
             size={26}
-            color="#2c3e50"
+            color={colors.uiPrimary}
           />
         </Pressable>
 
         <Text style={styles.timer}>{timer}</Text>
 
         <Pressable style={styles.iconButton} onPress={onRestart}>
-          <MaterialCommunityIcons name="restart" size={26} color="#2c3e50" />
+          <MaterialCommunityIcons name="restart" size={26} color={colors.uiPrimary} />
         </Pressable>
 
         <SettingsMenu />
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   checkText: {
-    color: '#fff',
+    color: colors.surface,
     fontSize: 13,
     fontWeight: 'bold',
   },

@@ -11,11 +11,13 @@ type ThemeContextType = {
   cellSize: number
   pieceSize: number
   displayType: DisplayType
+  showCoordinates: boolean
   canDecreaseSize: boolean
   canIncreaseSize: boolean
   decreaseSize: () => void
   increaseSize: () => void
   setDisplayType: (type: DisplayType) => void
+  setShowCoordinates: (show: boolean) => void
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null)
@@ -23,6 +25,7 @@ const ThemeContext = createContext<ThemeContextType | null>(null)
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [cellSize, setCellSize] = useState(CELL_SIZE_DEFAULT)
   const [displayType, setDisplayType] = useState<DisplayType>('svg')
+  const [showCoordinates, setShowCoordinates] = useState(false)
 
   return (
     <ThemeContext.Provider
@@ -30,6 +33,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         cellSize,
         pieceSize: cellSize * 0.8,
         displayType,
+        showCoordinates,
         canDecreaseSize: cellSize > CELL_SIZE_MIN,
         canIncreaseSize: cellSize < CELL_SIZE_MAX,
         decreaseSize: () =>
@@ -37,6 +41,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
         increaseSize: () =>
           setCellSize((s) => Math.min(s + CELL_SIZE_STEP, CELL_SIZE_MAX)),
         setDisplayType,
+        setShowCoordinates,
       }}
     >
       {children}

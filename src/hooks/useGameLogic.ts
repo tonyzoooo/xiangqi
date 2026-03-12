@@ -9,7 +9,7 @@ import { useTimer } from './useTimer'
 
 export const useGameLogic = () => {
   const history = useHistory()
-  const { state, turn, setTurn, restartBoard, applyMove, undoMove } =
+  const { state, turn, setTurn, moves, restartBoard, applyMove, undoMove } =
     useBoardState(history)
 
   const { selected, validMoves, captures, selectPiece, clearSelection } =
@@ -94,6 +94,7 @@ export const useGameLogic = () => {
 
   return {
     state,
+    moves,
     selected,
     validMoves,
     captures,

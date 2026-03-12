@@ -45,7 +45,7 @@ export const Piece = ({ piece, side, onPress, selected }: PieceProps) => {
           <Text
             x={pieceSize / 2}
             y={pieceSize / 2}
-            fontSize={pieceSize * 0.3}
+            fontSize={pieceSize * 0.52}
             fill={color}
             fontWeight="bold"
             textAnchor="middle"

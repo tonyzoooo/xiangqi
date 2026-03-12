@@ -1,5 +1,5 @@
 import { Cannon, PieceFactory, Soldier } from './rules'
-import { BoardState, Piece, PieceType, Side } from './types'
+import { BoardState, Move, Piece, PieceType, Side } from './types'
 
 export function createEmptyBoard(): BoardState {
   return Array.from({ length: 10 }, () => Array<Piece | null>(9).fill(null))
@@ -38,5 +38,21 @@ export function createInitialBoard(): BoardState {
     board[6][col] = new Soldier(red)
   }
 
+  return board
+}
+
+/** Replay the first `upToIndex` moves (inclusive) from the initial board. */
+export function reconstructBoardAt(moves: Move[], upToIndex: number): BoardState {
+  let board = createInitialBoard()
+  for (let i = 0; i <= upToIndex; i++) {
+    const {
+      from: [fx, fy],
+      to: [tx, ty],
+    } = moves[i]
+    const next = board.map((row) => [...row])
+    next[ty][tx] = next[fy][fx]
+    next[fy][fx] = null
+    board = next
+  }
   return board
 }
