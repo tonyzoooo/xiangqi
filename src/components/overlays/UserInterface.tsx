@@ -10,6 +10,7 @@ type UserInterfaceProps = {
   onRestart: () => void
   onUndo: () => void
   canUndo: boolean
+  isInCheck: boolean
 }
 
 const sideLabel = {
@@ -23,6 +24,7 @@ export const UserInterface = ({
   onRestart,
   onUndo,
   canUndo,
+  isInCheck,
 }: UserInterfaceProps) => {
   return (
     <View style={styles.container}>
@@ -33,6 +35,13 @@ export const UserInterface = ({
         >
           {sideLabel[turn]}
         </Text>
+        {isInCheck && (
+          <View style={styles.checkBadge}>
+            <Text style={styles.checkText} selectable={false}>
+              將軍
+            </Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.bottomBar}>
@@ -67,6 +76,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingHorizontal: 30,
   },
+  checkBadge: {
+    backgroundColor: colors.check,
+    borderRadius: 6,
+    marginLeft: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  checkText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'space-between',
@@ -94,10 +115,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   topBar: {
+    alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: colors.boardFill,
     borderRadius: 12,
     elevation: 3,
+    flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 8,
   },

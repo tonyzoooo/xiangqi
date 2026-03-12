@@ -11,7 +11,7 @@ export const ValidMovesOverlay = ({ moves }: ValidMovesOverlayProps) => {
   return (
     <>
       {moves.map(([x, y]) => {
-        const size = CELL_SIZE * 0.2
+        const size = CELL_SIZE * 0.32
         const offset = (CELL_SIZE - size) / 2
 
         return (

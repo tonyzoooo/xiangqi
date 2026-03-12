@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native'
 
-import { CELL_SIZE } from '@/constants'
+import { BORDER_WIDTH, CELL_SIZE, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
 import { colors } from '@/theme'
 
 type CapturesProps = {
@@ -11,17 +11,16 @@ export const Captures = ({ captures }: CapturesProps) => {
   return (
     <>
       {captures.map(([x, y]) => {
-        const size = CELL_SIZE * 0.25
-        const offset = (CELL_SIZE - size) / 2
+        const size = PIECE_SIZE + 4
 
         return (
           <View
             key={`${x}-${y}`}
             style={[
-              styles.capture,
+              styles.ring,
               {
-                top: y * CELL_SIZE + offset,
-                left: x * CELL_SIZE + offset,
+                top: y * CELL_SIZE + BORDER_WIDTH + (PIECE_SIZE + STROKE_WIDTH - size) / 2,
+                left: x * CELL_SIZE + BORDER_WIDTH + (PIECE_SIZE + STROKE_WIDTH - size) / 2,
                 width: size,
                 height: size,
                 borderRadius: size / 2,
@@ -35,8 +34,9 @@ export const Captures = ({ captures }: CapturesProps) => {
 }
 
 const styles = StyleSheet.create({
-  capture: {
-    backgroundColor: colors.capture,
+  ring: {
+    borderColor: colors.capture,
+    borderWidth: 3,
     position: 'absolute',
   },
 })

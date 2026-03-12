@@ -53,7 +53,7 @@ export abstract class Piece {
     return !!target && target.side === this.side
   }
 
-  protected isGeneralThreatened(board: BoardState, side: Side): boolean {
+  isGeneralThreatened(board: BoardState, side: Side): boolean {
     let gx = -1,
       gy = -1
 

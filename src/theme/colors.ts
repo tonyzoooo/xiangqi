@@ -4,6 +4,7 @@ export const colors = {
   boardBorder: '#222',
   red: '#b00',
   black: '#000',
-  validMoves: 'rgba(0, 255, 0, 0.5)',
-  capture: '#b00',
+  validMoves: 'rgba(40, 130, 255, 0.65)',
+  capture: 'rgba(255, 90, 0, 0.9)',
+  check: '#e00',
 }

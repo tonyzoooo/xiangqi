@@ -18,6 +18,7 @@ export const Game = () => {
     captures,
     turn,
     timer,
+    checkPosition,
     restartGame,
     undoLastMove,
     handlePress,
@@ -32,6 +33,7 @@ export const Game = () => {
         <GameOverlay
           validMoves={validMoves}
           captures={captures}
+          checkPosition={checkPosition}
           state={state}
           turn={turn}
           selected={selected}
@@ -53,6 +55,7 @@ export const Game = () => {
         onUndo={undoLastMove}
         timer={formatTime(timer)}
         canUndo={canUndoLastMove}
+        isInCheck={!!checkPosition}
       />
     </View>
   )

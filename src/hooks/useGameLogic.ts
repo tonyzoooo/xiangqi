@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { BoardState, Piece, Side } from '@/logic'
 
@@ -67,6 +67,19 @@ export const useGameLogic = () => {
 
   const canUndoLastMove = history.length !== 0
 
+  // Position of the current side's general if it is in check, otherwise null
+  const checkPosition = useMemo((): [number, number] | null => {
+    for (let y = 0; y < state.length; y++) {
+      for (let x = 0; x < state[y].length; x++) {
+        const piece = state[y][x]
+        if (piece?.type === 'general' && piece.side === turn) {
+          return piece.isGeneralThreatened(state, turn) ? [x, y] : null
+        }
+      }
+    }
+    return null
+  }, [state, turn])
+
   const hasNoLegalMoves = (board: BoardState, side: Side): boolean => {
     for (let y = 0; y < board.length; y++) {
       for (let x = 0; x < board[y].length; x++) {
@@ -87,6 +100,7 @@ export const useGameLogic = () => {
     turn,
     timer,
     winner,
+    checkPosition,
     restartGame,
     undoLastMove,
     handlePress,
