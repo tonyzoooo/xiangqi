@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { Animated, Easing, StyleSheet } from 'react-native'
 
-import { BORDER_WIDTH, CELL_SIZE, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
-import { colors } from '@/theme'
+import { BORDER_WIDTH, STROKE_WIDTH } from '@/constants'
+import { colors, useTheme } from '@/theme'
 
 type CheckIndicatorProps = {
   position: [number, number] | null
 }
 
 export const CheckIndicator = ({ position }: CheckIndicatorProps) => {
+  const { cellSize, pieceSize } = useTheme()
   const pulse = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -40,8 +41,8 @@ export const CheckIndicator = ({ position }: CheckIndicatorProps) => {
   if (!position) return null
 
   const [x, y] = position
-  const size = PIECE_SIZE + 8
-  const offset = (PIECE_SIZE + STROKE_WIDTH - size) / 2
+  const size = pieceSize + 8
+  const offset = (pieceSize + STROKE_WIDTH - size) / 2
 
   const opacity = pulse.interpolate({
     inputRange: [0, 1],
@@ -53,8 +54,8 @@ export const CheckIndicator = ({ position }: CheckIndicatorProps) => {
       style={[
         styles.ring,
         {
-          top: y * CELL_SIZE + BORDER_WIDTH + offset,
-          left: x * CELL_SIZE + BORDER_WIDTH + offset,
+          top: y * cellSize + BORDER_WIDTH + offset,
+          left: x * cellSize + BORDER_WIDTH + offset,
           width: size,
           height: size,
           borderRadius: size / 2,

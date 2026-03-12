@@ -1,5 +1,6 @@
 export * from './Captures'
 export * from './CheckIndicator'
+export * from './SettingsMenu'
 export * from './InteractionGrid'
 export * from './PalaceOverlay'
 export * from './UserInterface'

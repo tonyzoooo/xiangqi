@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import type { Side } from '@/logic/types'
 import { colors } from '@/theme'
 
+import { SettingsMenu } from './SettingsMenu'
+
 type UserInterfaceProps = {
   turn: Side
   timer: string
@@ -61,6 +63,8 @@ export const UserInterface = ({
         <Pressable style={styles.iconButton} onPress={onRestart}>
           <MaterialCommunityIcons name="restart" size={26} color="#2c3e50" />
         </Pressable>
+
+        <SettingsMenu />
       </View>
     </View>
   )
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   checkBadge: {
     backgroundColor: colors.check,

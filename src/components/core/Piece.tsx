@@ -3,28 +3,22 @@ import { Pressable } from 'react-native'
 import Svg, { Circle, Text, G } from 'react-native-svg'
 import { SvgProps } from 'react-native-svg'
 
-import { ICONS, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
+import { ICONS, STROKE_WIDTH } from '@/constants'
 import { Piece as PieceInfo, Side } from '@/logic'
-import { colors, DisplayType } from '@/theme'
+import { colors, useTheme } from '@/theme'
 
 type PieceProps = {
   piece: PieceInfo
   side: Side
-  displayType?: DisplayType
   onPress?: () => void
   selected?: boolean
 }
 
-export const Piece = ({
-  piece,
-  side,
-  displayType = 'svg',
-  onPress,
-  selected,
-}: PieceProps) => {
+export const Piece = ({ piece, side, onPress, selected }: PieceProps) => {
+  const { pieceSize, displayType } = useTheme()
   const color = side === 'red' ? colors.red : colors.black
-  const iconSize = PIECE_SIZE * 0.6
-  const offset = (PIECE_SIZE - iconSize) / 2
+  const iconSize = pieceSize * 0.6
+  const offset = (pieceSize - iconSize) / 2
 
   const IconCommon: FC<SvgProps> = ICONS.common[piece.type]
   const IconSide: FC<SvgProps> = ICONS[side][piece.type]
@@ -32,16 +26,16 @@ export const Piece = ({
   return (
     <Pressable onPress={onPress}>
       <Svg
-        width={PIECE_SIZE}
-        height={PIECE_SIZE}
+        width={pieceSize}
+        height={pieceSize}
         style={
           side === 'black' ? { transform: [{ rotate: '180deg' }] } : undefined
         }
       >
         <Circle
-          cx={PIECE_SIZE / 2}
-          cy={PIECE_SIZE / 2}
-          r={PIECE_SIZE / 2 - STROKE_WIDTH}
+          cx={pieceSize / 2}
+          cy={pieceSize / 2}
+          r={pieceSize / 2 - STROKE_WIDTH}
           stroke={color}
           strokeWidth={STROKE_WIDTH}
           fill={selected ? '#ff0' : '#fff'}
@@ -49,9 +43,9 @@ export const Piece = ({
 
         {displayType === 'text' ? (
           <Text
-            x={PIECE_SIZE / 2}
-            y={PIECE_SIZE / 2}
-            fontSize={PIECE_SIZE * 0.3}
+            x={pieceSize / 2}
+            y={pieceSize / 2}
+            fontSize={pieceSize * 0.3}
             fill={color}
             fontWeight="bold"
             textAnchor="middle"

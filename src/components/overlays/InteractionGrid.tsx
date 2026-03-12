@@ -1,14 +1,15 @@
 import { Pressable, StyleSheet, View } from 'react-native'
 
-import { CELL_SIZE, COLS, ROWS } from '@/constants'
-
-const DEBUG = true
+import { COLS, ROWS } from '@/constants'
+import { useTheme } from '@/theme'
 
 type Props = {
   onPress: (x: number, y: number) => void
 }
 
 export const InteractionGrid = ({ onPress }: Props) => {
+  const { cellSize } = useTheme()
+
   return (
     <View style={StyleSheet.absoluteFill}>
       {Array.from({ length: ROWS + 1 }).map((_, y) =>
@@ -19,13 +20,13 @@ export const InteractionGrid = ({ onPress }: Props) => {
             style={[
               styles.cell,
               {
-                top: y * CELL_SIZE,
-                left: x * CELL_SIZE,
+                top: y * cellSize,
+                left: x * cellSize,
+                width: cellSize,
+                height: cellSize,
               },
             ]}
-          >
-            {DEBUG && <View style={styles.innerCell} />}
-          </Pressable>
+          />
         ))
       )}
     </View>
@@ -35,15 +36,7 @@ export const InteractionGrid = ({ onPress }: Props) => {
 const styles = StyleSheet.create({
   cell: {
     alignItems: 'center',
-    height: CELL_SIZE,
     justifyContent: 'center',
     position: 'absolute',
-    width: CELL_SIZE,
-  },
-  innerCell: {
-    //backgroundColor: 'rgba(255, 255, 0, 0.5)',
-    borderRadius: CELL_SIZE * 0.15,
-    height: CELL_SIZE * 0.3,
-    width: CELL_SIZE * 0.3,
   },
 })

@@ -3,17 +3,18 @@ import { View, StyleSheet } from 'react-native'
 
 import { Game } from '@/components'
 import { GameProvider } from '@/context/GameContext'
-
-import { colors } from './theme'
+import { colors, ThemeProvider } from '@/theme'
 
 export default function App() {
   return (
-    <GameProvider>
-      <View style={styles.container}>
-        <Game />
-        <StatusBar style="auto" />
-      </View>
-    </GameProvider>
+    <ThemeProvider>
+      <GameProvider>
+        <View style={styles.container}>
+          <Game />
+          <StatusBar style="auto" />
+        </View>
+      </GameProvider>
+    </ThemeProvider>
   )
 }
 

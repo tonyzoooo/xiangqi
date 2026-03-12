@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import { BORDER_WIDTH, CELL_SIZE, PIECE_SIZE, STROKE_WIDTH } from '@/constants'
+import { BORDER_WIDTH, STROKE_WIDTH } from '@/constants'
 import { Piece as PieceType, Side } from '@/logic'
+import { useTheme } from '@/theme'
 
 import { Piece } from './core'
 
@@ -16,6 +17,9 @@ export const GamePieces = ({
   selected: [number, number] | null
   onPress: (x: number, y: number, piece: PieceType) => void
 }) => {
+  const { cellSize, pieceSize } = useTheme()
+  const containerSize = pieceSize + STROKE_WIDTH
+
   return (
     <>
       {state.map((row, y) =>
@@ -26,8 +30,10 @@ export const GamePieces = ({
               style={[
                 styles.piecePosition,
                 {
-                  top: y * CELL_SIZE + BORDER_WIDTH,
-                  left: x * CELL_SIZE + BORDER_WIDTH,
+                  top: y * cellSize + BORDER_WIDTH,
+                  left: x * cellSize + BORDER_WIDTH,
+                  width: containerSize,
+                  height: containerSize,
                 },
               ]}
             >
@@ -48,9 +54,7 @@ export const GamePieces = ({
 const styles = StyleSheet.create({
   piecePosition: {
     alignItems: 'center',
-    height: PIECE_SIZE + STROKE_WIDTH,
     justifyContent: 'center',
     position: 'absolute',
-    width: PIECE_SIZE + STROKE_WIDTH,
   },
 })

@@ -1,8 +1,8 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 import Svg, { Line } from 'react-native-svg'
 
-import { BORDER_WIDTH, CELL_SIZE } from '@/constants'
-import { colors } from '@/theme'
+import { BORDER_WIDTH } from '@/constants'
+import { colors, useTheme } from '@/theme'
 
 export const PalaceOverlay = () => {
   return (
@@ -21,21 +21,17 @@ type DiagonalProps = {
 }
 
 const Diagonal = ({ from, to }: DiagonalProps) => {
+  const { cellSize } = useTheme()
   const [x1, y1] = from
   const [x2, y2] = to
 
-  const width = Math.abs(x2 - x1) * CELL_SIZE
-  const height = Math.abs(y2 - y1) * CELL_SIZE
+  const width = Math.abs(x2 - x1) * cellSize
+  const height = Math.abs(y2 - y1) * cellSize
 
-  const top = Math.min(y1, y2) * CELL_SIZE - BORDER_WIDTH
-  const left = Math.min(x1, x2) * CELL_SIZE - BORDER_WIDTH
+  const top = Math.min(y1, y2) * cellSize - BORDER_WIDTH
+  const left = Math.min(x1, x2) * cellSize - BORDER_WIDTH
 
-  const dynamicStyle: ViewStyle = {
-    top,
-    left,
-    width,
-    height,
-  }
+  const dynamicStyle: ViewStyle = { top, left, width, height }
 
   return (
     <Svg style={[styles.svg, dynamicStyle]}>

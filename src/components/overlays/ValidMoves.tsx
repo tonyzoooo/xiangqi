@@ -1,18 +1,19 @@
 import { View, StyleSheet } from 'react-native'
 
-import { CELL_SIZE } from '@/constants'
-import { colors } from '@/theme'
+import { colors, useTheme } from '@/theme'
 
 type ValidMovesOverlayProps = {
   moves: [number, number][]
 }
 
 export const ValidMovesOverlay = ({ moves }: ValidMovesOverlayProps) => {
+  const { cellSize } = useTheme()
+
   return (
     <>
       {moves.map(([x, y]) => {
-        const size = CELL_SIZE * 0.32
-        const offset = (CELL_SIZE - size) / 2
+        const size = cellSize * 0.32
+        const offset = (cellSize - size) / 2
 
         return (
           <View
@@ -22,8 +23,8 @@ export const ValidMovesOverlay = ({ moves }: ValidMovesOverlayProps) => {
               {
                 width: size,
                 height: size,
-                top: y * CELL_SIZE + offset,
-                left: x * CELL_SIZE + offset,
+                top: y * cellSize + offset,
+                left: x * cellSize + offset,
                 borderRadius: size / 2,
               },
             ]}
