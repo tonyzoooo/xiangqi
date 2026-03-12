@@ -9,11 +9,31 @@ export abstract class Piece {
     this.side = side
   }
 
-  abstract getValidMoves(
+  abstract getPseudoMoves(
     board: BoardState,
     x: number,
     y: number
   ): Array<[number, number]>
+
+  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+    return this.getPseudoMoves(board, x, y).filter(([nx, ny]) => {
+      const sim = this.simulateMove(board, [x, y], [nx, ny])
+      return !this.isGeneralThreatened(sim, this.side)
+    })
+  }
+
+  protected simulateMove(
+    board: BoardState,
+    from: [number, number],
+    to: [number, number]
+  ): BoardState {
+    const [fx, fy] = from
+    const [tx, ty] = to
+    const newBoard = board.map((row) => [...row])
+    newBoard[ty][tx] = newBoard[fy][fx]
+    newBoard[fy][fx] = null
+    return newBoard
+  }
 
   protected isInsideBoard(x: number, y: number): boolean {
     return x >= 0 && x < 9 && y >= 0 && y < 10
@@ -33,96 +53,6 @@ export abstract class Piece {
     return !!target && target.side === this.side
   }
 
-  protected isBlocked(board: BoardState, x: number, y: number): boolean {
-    return !!board[y]?.[x]
-  }
-
-  protected isIllegalCapture(target: Piece | null): boolean {
-    return target?.type === 'general'
-  }
-
-  protected getStepMoves(
-    board: BoardState,
-    x: number,
-    y: number,
-    directions: [number, number][]
-  ): [number, number][] {
-    const moves: [number, number][] = []
-
-    for (const [dx, dy] of directions) {
-      const nx = x + dx
-      const ny = y + dy
-
-      if (!this.isInsideBoard(nx, ny)) continue
-
-      const target = board[ny][nx]
-      if (!target || !this.sameSide(target)) {
-        moves.push([nx, ny])
-      }
-    }
-
-    return moves
-  }
-
-  protected isFlyingGeneralViolated(
-    board: BoardState,
-    from: [number, number],
-    to: [number, number]
-  ): boolean {
-    const [fromX, fromY] = from
-    const [toX, toY] = to
-
-    for (let x = 0; x < 9; x++) {
-      let redY: number | null = null
-      let blackY: number | null = null
-
-      for (let y = 0; y < 10; y++) {
-        if (x === fromX && y === fromY) continue
-
-        let piece = board[y][x]
-
-        if (x === toX && y === toY) {
-          piece = board[fromY][fromX]
-        }
-
-        if (!piece || piece.type !== 'general') continue
-
-        if (piece.side === 'red') redY = y
-        else blackY = y
-      }
-
-      if (redY !== null && blackY !== null) {
-        const [minY, maxY] = [Math.min(redY, blackY), Math.max(redY, blackY)]
-        let blocked = false
-
-        for (let y = minY + 1; y < maxY; y++) {
-          if (x === fromX && y === fromY) continue
-
-          const cell =
-            x === toX && y === toY ? board[fromY][fromX] : board[y][x]
-          if (cell) {
-            blocked = true
-            break
-          }
-        }
-
-        if (!blocked) return true
-      }
-    }
-
-    return false
-  }
-
-  protected blocksDueToGeneralCapture(
-    board: BoardState,
-    positions: [number, number][]
-  ): boolean {
-    return positions.some(([x, y]) => {
-      const target = board[y][x]
-      return target?.type === 'general' && !this.sameSide(target)
-    })
-  }
-
   protected isGeneralThreatened(board: BoardState, side: Side): boolean {
     let gx = -1,
       gy = -1
@@ -139,14 +69,32 @@ export abstract class Piece {
       if (gx !== -1) break
     }
 
+    if (gx === -1) return false
+
+    // Check if any enemy piece can reach the general via pseudo moves
     for (let y = 0; y < board.length; y++) {
       for (let x = 0; x < board[y].length; x++) {
         const piece = board[y][x]
         if (!piece || piece.side === side) continue
+        const moves = piece.getPseudoMoves(board, x, y)
+        if (moves.some(([mx, my]) => mx === gx && my === gy)) return true
+      }
+    }
 
-        const moves = piece.getValidMoves(board, x, y)
-        if (moves.some(([mx, my]) => mx === gx && my === gy)) {
-          return true
+    // Flying generals: two generals face each other in same column with no pieces between
+    for (let y = 0; y < board.length; y++) {
+      for (let x = 0; x < board[y].length; x++) {
+        const piece = board[y][x]
+        if (piece?.type === 'general' && piece.side !== side && x === gx) {
+          const [minY, maxY] = [Math.min(gy, y), Math.max(gy, y)]
+          let blocked = false
+          for (let cy = minY + 1; cy < maxY; cy++) {
+            if (board[cy][x]) {
+              blocked = true
+              break
+            }
+          }
+          if (!blocked) return true
         }
       }
     }

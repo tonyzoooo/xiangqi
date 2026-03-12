@@ -6,7 +6,7 @@ export class Chariot extends Piece {
     super('chariot', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const directions: [number, number][] = [
       [0, 1],
       [0, -1],
@@ -23,10 +23,7 @@ export class Chariot extends Piece {
       while (this.isInsideBoard(nx, ny)) {
         const target = board[ny][nx]
 
-        if (
-          !this.sameSide(target) &&
-          !this.isFlyingGeneralViolated(board, [x, y], [nx, ny])
-        ) {
+        if (!this.sameSide(target)) {
           moves.push([nx, ny])
         }
 
@@ -36,13 +33,6 @@ export class Chariot extends Piece {
       }
     }
 
-    if (this.blocksDueToGeneralCapture(board, moves)) {
-      return []
-    }
-
-    return moves.filter(([nx, ny]) => {
-      const target = board[ny][nx]
-      return !this.isIllegalCapture(target)
-    })
+    return moves
   }
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { createInitialBoard, MoveHistory, PieceFactory } from '@/logic'
+import { BoardState, createInitialBoard, MoveHistory, PieceFactory } from '@/logic'
 
 export const useBoardState = (history: MoveHistory) => {
   const [state, setState] = useState(createInitialBoard())
@@ -11,7 +11,7 @@ export const useBoardState = (history: MoveHistory) => {
     setState(createInitialBoard())
   }
 
-  const applyMove = (sx: number, sy: number, x: number, y: number) => {
+  const applyMove = (sx: number, sy: number, x: number, y: number): BoardState => {
     const newBoard = state.map((row) => [...row])
     const piece = state[sy][sx]!
     newBoard[y][x] = piece
@@ -26,6 +26,7 @@ export const useBoardState = (history: MoveHistory) => {
     })
 
     setState(newBoard)
+    return newBoard
   }
 
   const undoMove = () => {

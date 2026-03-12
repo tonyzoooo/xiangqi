@@ -6,7 +6,7 @@ export class Horse extends Piece {
     super('horse', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const moves: [number, number][] = []
 
     const directions: {
@@ -29,22 +29,12 @@ export class Horse extends Piece {
 
       if (this.isInsideBoard(nx, ny) && !board[by]?.[bx]) {
         const target = board[ny][nx]
-        if (
-          !this.sameSide(target) &&
-          !this.isFlyingGeneralViolated(board, [x, y], [nx, ny])
-        ) {
+        if (!this.sameSide(target)) {
           moves.push([nx, ny])
         }
       }
     }
 
-    if (this.blocksDueToGeneralCapture(board, moves)) {
-      return []
-    }
-
-    return moves.filter(([nx, ny]) => {
-      const target = board[ny][nx]
-      return !this.isIllegalCapture(target)
-    })
+    return moves
   }
 }

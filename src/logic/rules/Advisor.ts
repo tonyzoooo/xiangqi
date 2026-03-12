@@ -6,7 +6,7 @@ export class Advisor extends Piece {
     super('advisor', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const directions: [number, number][] = [
       [1, 1],
       [-1, 1],
@@ -14,20 +14,13 @@ export class Advisor extends Piece {
       [-1, -1],
     ]
 
-    const candidates = directions
+    return directions
       .map(([dx, dy]) => [x + dx, y + dy] as [number, number])
       .filter(
-        ([nx, ny]) => this.isInsideBoard(nx, ny) && this.isInPalace(nx, ny)
+        ([nx, ny]) =>
+          this.isInsideBoard(nx, ny) &&
+          this.isInPalace(nx, ny) &&
+          !this.sameSide(board[ny][nx])
       )
-
-    const moves = candidates.filter(([nx, ny]) => {
-      const target = board[ny][nx]
-      return (
-        !this.sameSide(target) &&
-        !this.isFlyingGeneralViolated(board, [x, y], [nx, ny])
-      )
-    })
-
-    return moves
   }
 }

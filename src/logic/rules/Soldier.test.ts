@@ -61,7 +61,7 @@ describe('Soldier#getValidMoves', () => {
     expect(black.getValidMoves(board, 5, 5)).not.toContainEqual([5, 4])
   })
 
-  it('cannot capture the general', () => {
+  it('can capture the general', () => {
     const board = createEmptyBoard()
     const redSoldier = new Soldier('red')
     const blackGeneral = new General('black')
@@ -70,7 +70,7 @@ describe('Soldier#getValidMoves', () => {
     board[4][6] = blackGeneral
 
     const moves = redSoldier.getValidMoves(board, 5, 4)
-    expect(moves).not.toContainEqual([6, 4])
+    expect(moves).toContainEqual([6, 4])
   })
 
   it('cannot move if it exposes flying general', () => {

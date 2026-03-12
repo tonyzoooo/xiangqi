@@ -70,7 +70,7 @@ describe('Horse#getValidMoves', () => {
     expect(moves).toEqual([])
   })
 
-  it('cannot capture general and has no other moves', () => {
+  it('can capture the general', () => {
     const board = createEmptyBoard()
     const horse = new Horse('red')
     const blackGeneral = new General('black')
@@ -79,6 +79,6 @@ describe('Horse#getValidMoves', () => {
     board[2][3] = blackGeneral
 
     const moves = horse.getValidMoves(board, 4, 4)
-    expect(moves).toEqual([])
+    expect(moves).toContainEqual([3, 2])
   })
 })

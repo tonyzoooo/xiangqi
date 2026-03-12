@@ -6,7 +6,7 @@ export class Elephant extends Piece {
     super('elephant', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const moves: [number, number][] = []
 
     const directions: [number, number][] = [
@@ -29,8 +29,7 @@ export class Elephant extends Piece {
         this.isInsideBoard(nx, ny) &&
         !mid &&
         !this.sameSide(target) &&
-        !this.hasCrossedRiver(ny) &&
-        !this.isFlyingGeneralViolated(board, [x, y], [nx, ny])
+        !this.hasCrossedRiver(ny)
       ) {
         moves.push([nx, ny])
       }

@@ -73,7 +73,7 @@ describe('Chariot#getValidMoves', () => {
     expect(moves).not.toContainEqual([6, 4])
   })
 
-  it('cannot capture the general', () => {
+  it('can capture the general', () => {
     const board = createEmptyBoard()
     const redChariot = new Chariot('red')
     const blackGeneral = new General('black')
@@ -82,20 +82,29 @@ describe('Chariot#getValidMoves', () => {
     board[4][6] = blackGeneral
 
     const moves = redChariot.getValidMoves(board, 4, 4)
-    expect(moves).not.toContainEqual([6, 4])
+    expect(moves).toContainEqual([6, 4])
   })
 
-  it('cannot move if it exposes flying general', () => {
+  it('cannot move horizontally when it would expose flying general', () => {
     const board = createEmptyBoard()
     const redChariot = new Chariot('red')
     const redGeneral = new General('red')
     const blackGeneral = new General('black')
 
-    board[4][0] = blackGeneral
-    board[4][4] = redChariot
-    board[4][9] = redGeneral
+    board[0][4] = blackGeneral  // y=0, x=4
+    board[4][4] = redChariot    // y=4, x=4 (blocking in column 4)
+    board[9][4] = redGeneral    // y=9, x=4
 
     const moves = redChariot.getValidMoves(board, 4, 4)
-    expect(moves).toEqual([])
+
+    // Horizontal moves would expose flying general — not allowed
+    expect(moves).not.toContainEqual([0, 4])
+    expect(moves).not.toContainEqual([3, 4])
+    expect(moves).not.toContainEqual([5, 4])
+    expect(moves).not.toContainEqual([8, 4])
+
+    // In-column moves keep the chariot between the generals — allowed
+    expect(moves).toContainEqual([4, 1])
+    expect(moves).toContainEqual([4, 5])
   })
 })

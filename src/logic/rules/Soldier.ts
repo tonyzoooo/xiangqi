@@ -6,7 +6,7 @@ export class Soldier extends Piece {
     super('soldier', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const moves: [number, number][] = []
     const dir = this.side === 'red' ? -1 : 1
     const forwardY = y + dir
@@ -22,28 +22,13 @@ export class Soldier extends Piece {
       if (this.isInsideBoard(x + 1, y)) candidates.push([x + 1, y])
     }
 
-    if (this.blocksDueToGeneralCapture(board, candidates)) {
-      return []
-    }
-
     for (const [nx, ny] of candidates) {
       const target = board[ny][nx]
-      const isSameSide = this.sameSide(target)
-
-      const violatesFlyingGeneral = this.isFlyingGeneralViolated(
-        board,
-        [x, y],
-        [nx, ny]
-      )
-
-      if (!isSameSide && !violatesFlyingGeneral) {
+      if (!this.sameSide(target)) {
         moves.push([nx, ny])
       }
     }
 
-    return moves.filter(([nx, ny]) => {
-      const target = board[ny][nx]
-      return !this.isIllegalCapture(target)
-    })
+    return moves
   }
 }

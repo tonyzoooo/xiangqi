@@ -59,7 +59,7 @@ describe('Cannon#getValidMoves', () => {
     expect(moves).not.toContainEqual([6, 4])
   })
 
-  it('cannot move if capturing general is possible', () => {
+  it('can capture the general by jumping', () => {
     const board = createEmptyBoard()
     const cannon = new Cannon('red')
     const blackGeneral = new General('black')
@@ -69,22 +69,22 @@ describe('Cannon#getValidMoves', () => {
     board[4][6] = blackGeneral
 
     const moves = cannon.getValidMoves(board, 4, 4)
-    expect(moves).toEqual([])
+    expect(moves).toContainEqual([6, 4])
   })
 
-  // TODO: fix this test
-  it.skip('cannot move horizontally if flying general is violated', () => {
+  it('cannot move horizontally if flying general is violated', () => {
     const board = createEmptyBoard()
     const cannon = new Cannon('red')
     const redGeneral = new General('red')
     const blackGeneral = new General('black')
 
-    board[4][4] = cannon
-    board[4][0] = blackGeneral
-    board[4][9] = redGeneral
+    board[0][4] = blackGeneral  // y=0, x=4
+    board[4][4] = cannon        // y=4, x=4 (blocking in column 4)
+    board[9][4] = redGeneral    // y=9, x=4
 
     const moves = cannon.getValidMoves(board, 4, 4)
 
+    // All valid moves must stay in column x=4 (horizontal moves expose flying general)
     for (const [x] of moves) {
       expect(x).toBe(4)
     }

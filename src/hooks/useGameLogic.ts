@@ -34,12 +34,12 @@ export const useGameLogic = () => {
     if (sx === x && sy === y) return clearSelection()
     if (!validMoves.some(([vx, vy]) => vx === x && vy === y)) return
 
-    applyMove(sx, sy, x, y)
+    const newBoard = applyMove(sx, sy, x, y)
     clearSelection()
 
     const opponent: Side = turn === 'red' ? 'black' : 'red'
 
-    if (isGeneralBlocked(state, opponent)) {
+    if (hasNoLegalMoves(newBoard, opponent)) {
       setWinner(turn)
     } else {
       setTurn(opponent)
@@ -67,13 +67,12 @@ export const useGameLogic = () => {
 
   const canUndoLastMove = history.length !== 0
 
-  const isGeneralBlocked = (board: BoardState, side: Side): boolean => {
+  const hasNoLegalMoves = (board: BoardState, side: Side): boolean => {
     for (let y = 0; y < board.length; y++) {
       for (let x = 0; x < board[y].length; x++) {
         const piece = board[y][x]
-        if (piece?.type === 'general' && piece.side === side) {
-          const moves = piece.getValidMoves(board, x, y)
-          return moves.length === 0
+        if (piece?.side === side && piece.getValidMoves(board, x, y).length > 0) {
+          return false
         }
       }
     }

@@ -6,14 +6,14 @@ export class General extends Piece {
     super('general', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const moves: [number, number][] = []
 
     const directions: [number, number][] = [
-      [0, -1], // up
-      [0, 1], // down
-      [-1, 0], // left
-      [1, 0], // right
+      [0, -1],
+      [0, 1],
+      [-1, 0],
+      [1, 0],
     ]
 
     for (const [dx, dy] of directions) {
@@ -23,8 +23,7 @@ export class General extends Piece {
       if (
         this.isInsideBoard(nx, ny) &&
         this.isInPalace(nx, ny) &&
-        this.sameSide(board[ny][nx]) !== true &&
-        !this.isFlyingGeneralViolated(board, [x, y], [nx, ny])
+        !this.sameSide(board[ny][nx])
       ) {
         moves.push([nx, ny])
       }

@@ -6,7 +6,7 @@ export class Cannon extends Piece {
     super('cannon', side)
   }
 
-  getValidMoves(board: BoardState, x: number, y: number): [number, number][] {
+  getPseudoMoves(board: BoardState, x: number, y: number): [number, number][] {
     const moves: [number, number][] = []
     const dirs: [number, number][] = [
       [1, 0],
@@ -27,18 +27,14 @@ export class Cannon extends Piece {
 
         if (!jumped) {
           if (!target) {
-            if (!this.isFlyingGeneralViolated(board, [x, y], [nx, ny])) {
-              moves.push([nx, ny])
-            }
+            moves.push([nx, ny])
           } else {
             jumped = true
           }
         } else {
           if (target) {
             if (!this.sameSide(target)) {
-              if (!this.isFlyingGeneralViolated(board, [x, y], [nx, ny])) {
-                moves.push([nx, ny])
-              }
+              moves.push([nx, ny])
             }
             break
           }
@@ -46,13 +42,6 @@ export class Cannon extends Piece {
       }
     }
 
-    if (this.blocksDueToGeneralCapture(board, moves)) {
-      return []
-    }
-
-    return moves.filter(([nx, ny]) => {
-      const target = board[ny][nx]
-      return !this.isIllegalCapture(target)
-    })
+    return moves
   }
 }
